@@ -25,7 +25,7 @@ class inamuragasakiViewController: UIViewController, UIImagePickerControllerDele
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
         let child = reference.child("InamuragasakiImages/" + user!.uid + "/"+"inamuragasaki.jpg")
         child.getData(maxSize: 1 * 1024 * 1024) { data, error in
             if error != nil {
@@ -84,7 +84,7 @@ class inamuragasakiViewController: UIViewController, UIImagePickerControllerDele
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("InamuragasakiImages/" + user!.uid + "/"+"inamuragasaki.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("InamuragasakiImages/" + user!.uid + "/"+"inamuragasaki.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.inamuragasakiImage.image?.jpegData(compressionQuality: 0.3) {
