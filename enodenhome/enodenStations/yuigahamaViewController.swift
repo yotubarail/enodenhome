@@ -23,7 +23,7 @@ class yuigahamaViewController: UIViewController, UIImagePickerControllerDelegate
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
         let child = reference.child("YuigahamaImages/" + user!.uid + "/"+"yuigahama.jpg")
         child.getData(maxSize: 1 * 1024 * 1024) { data, error in
             if error != nil {
@@ -82,7 +82,7 @@ class yuigahamaViewController: UIViewController, UIImagePickerControllerDelegate
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("YuigahamaImages/" + user!.uid + "/"+"yuigahama.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("YuigahamaImages/" + user!.uid + "/"+"yuigahama.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.yuigahamaImage.image?.jpegData(compressionQuality: 0.3) {
