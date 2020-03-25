@@ -25,7 +25,7 @@ class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
         let child = reference.child("KoshigoeImages/" + user!.uid + "/"+"koshigoe.jpg")
         child.getData(maxSize: 1 * 1024 * 1024) { data, error in
             if error != nil {
@@ -85,7 +85,7 @@ class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("KoshigoeImages/" + user!.uid + "/"+"koshigoe.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("KoshigoeImages/" + user!.uid + "/"+"koshigoe.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.koshigoeImage.image?.jpegData(compressionQuality: 0.3) {
@@ -118,14 +118,5 @@ class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,
         let nextView = storyboard?.instantiateViewController(withIdentifier: "KoshigoeWebChoose") as! KoshigoeWebViewController
         self.navigationController?.pushViewController(nextView, animated: true)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
