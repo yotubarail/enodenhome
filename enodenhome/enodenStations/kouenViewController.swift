@@ -25,7 +25,7 @@ class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UIN
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
         let child = reference.child("KouenImages/" + user!.uid + "/"+"kouen.jpg")
         child.getData(maxSize: 1 * 1024 * 1024) { data, error in
             if error != nil {
@@ -84,7 +84,7 @@ class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UIN
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("KouenImages/" + user!.uid + "/"+"kouen.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("KouenImages/" + user!.uid + "/"+"kouen.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.kouenImage.image?.jpegData(compressionQuality: 0.3) {
@@ -116,15 +116,5 @@ class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UIN
         let nextView = storyboard?.instantiateViewController(withIdentifier: "KouenWebChoose") as! KouenWebViewController
         self.navigationController?.pushViewController(nextView, animated: true)
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+  
 }
