@@ -26,7 +26,7 @@ class kamakuraViewController: UIViewController, UIImagePickerControllerDelegate,
         imagePick.delegate = self
 
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
         let child = reference.child("KamakuraImages/" + user!.uid + "/"+"kamakura.jpg")
         child.getData(maxSize: 1 * 1024 * 1024) { data, error in
             if error != nil {
@@ -85,7 +85,7 @@ class kamakuraViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("KamakuraImages/" + user!.uid + "/"+"kamakura.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("KamakuraImages/" + user!.uid + "/"+"kamakura.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.kamakuraImage.image?.jpegData(compressionQuality: 0.3) {
