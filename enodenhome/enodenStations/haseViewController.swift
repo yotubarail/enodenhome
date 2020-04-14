@@ -25,7 +25,7 @@ class haseViewController: UIViewController, UIImagePickerControllerDelegate,UINa
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXX.appspot.com")
         let child = reference.child("HaseImages/" + user!.uid + "/"+"hase.jpg")
 
         haseImage.sd_setImage(with: child)
