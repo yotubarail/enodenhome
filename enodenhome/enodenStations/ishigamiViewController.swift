@@ -26,7 +26,7 @@ class ishigamiViewController: UIViewController, UIImagePickerControllerDelegate,
         imagePick.delegate = self
 
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXX.appspot.com")
         let child = reference.child("IshigamiImages/" + user!.uid + "/"+"ishigami.jpg")
         ishigamiImage.sd_setImage(with: child, placeholderImage: UIImage(named: "icon"))
     }
