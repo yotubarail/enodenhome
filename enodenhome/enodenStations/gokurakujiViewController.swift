@@ -25,7 +25,7 @@ class gokurakujiViewController: UIViewController, UIImagePickerControllerDelegat
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXX.appspot.com")
         let child = reference.child("GokurakujiImages/" + user!.uid + "/"+"gokurakuji.jpg")
 
         gokurakujiImage.sd_setImage(with: child)
