@@ -26,7 +26,7 @@ class wadazukaViewController: UIViewController, UIImagePickerControllerDelegate,
         self.navigationItem.title = "和田塚 EN14"
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXX.appspot.com")
         let child = reference.child("WadazukaImages/" + user!.uid + "/"+"wadazuka.jpg")
 
         wadazukaImage.sd_setImage(with: child)
