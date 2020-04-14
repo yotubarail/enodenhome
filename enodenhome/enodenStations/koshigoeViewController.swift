@@ -26,7 +26,7 @@ class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXX.appspot.com")
         let child = reference.child("KoshigoeImages/" + user!.uid + "/"+"koshigoe.jpg")
 
         koshigoeImage.sd_setImage(with: child)
