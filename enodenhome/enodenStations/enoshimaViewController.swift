@@ -27,7 +27,7 @@ class enoshimaViewController: UIViewController, UIImagePickerControllerDelegate,
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXX.appspot.com")
         let child = reference.child("EnoshimaImages/" + user!.uid + "/"+"enoshima.jpg")
 
         enoshimaImage.sd_setImage(with: child)
