@@ -6,3 +6,4 @@ FirebaseUIを用いたログイン機能とFirebase Storageを使ってのデー
 
 ## 今後の課題
 ### SDWebImageのキャッシュをクリアするタイミング
+現在
