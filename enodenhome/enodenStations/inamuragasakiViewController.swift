@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class inamuragasakiViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -20,19 +21,15 @@ class inamuragasakiViewController: UIViewController, UIImagePickerControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "稲村ヶ崎(Inamuragasaki)EN10"
+        self.navigationItem.title = "稲村ヶ崎 EN10"
 
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("InamuragasakiImages/" + user!.uid + "/"+"inamuragasaki.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.inamuragasakiImage.image = UIImage(data: data!)
-            }
-        }
+
+        inamuragasakiImage.sd_setImage(with: child)
 
     }
     
@@ -63,6 +60,8 @@ class inamuragasakiViewController: UIViewController, UIImagePickerControllerDele
             
            
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -84,7 +83,7 @@ class inamuragasakiViewController: UIViewController, UIImagePickerControllerDele
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("InamuragasakiImages/" + user!.uid + "/"+"inamuragasaki.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("InamuragasakiImages/" + user!.uid + "/"+"inamuragasaki.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.inamuragasakiImage.image?.jpegData(compressionQuality: 0.3) {

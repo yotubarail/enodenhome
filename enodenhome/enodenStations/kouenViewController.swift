@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -20,19 +21,15 @@ class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UIN
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "湘南海岸公園（Shonan-Kaigan-Koen)EN05"
+        self.navigationItem.title = "湘南海岸公園 EN05"
 
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("KouenImages/" + user!.uid + "/"+"kouen.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.kouenImage.image = UIImage(data: data!)
-            }
-        }
+
+        kouenImage.sd_setImage(with: child)
 
     }
     
@@ -63,6 +60,8 @@ class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UIN
             print("OK")
          
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -84,7 +83,7 @@ class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UIN
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("KouenImages/" + user!.uid + "/"+"kouen.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("KouenImages/" + user!.uid + "/"+"kouen.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.kouenImage.image?.jpegData(compressionQuality: 0.3) {
@@ -98,7 +97,6 @@ class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UIN
                         print("error: \(error!.localizedDescription)")
                     }
                     print("url: \(url!.absoluteString)")
-                 
                 })
             }
         }
@@ -116,5 +114,15 @@ class kouenViewController: UIViewController, UIImagePickerControllerDelegate,UIN
         let nextView = storyboard?.instantiateViewController(withIdentifier: "KouenWebChoose") as! KouenWebViewController
         self.navigationController?.pushViewController(nextView, animated: true)
     }
-  
+    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
 }

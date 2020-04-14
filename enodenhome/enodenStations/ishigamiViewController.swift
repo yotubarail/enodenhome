@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 class ishigamiViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -21,18 +22,13 @@ class ishigamiViewController: UIViewController, UIImagePickerControllerDelegate,
         override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "石上(Ishigami)EN02"
+        self.navigationItem.title = "石上 EN02"
         imagePick.delegate = self
 
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("IshigamiImages/" + user!.uid + "/"+"ishigami.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.ishigamiImage.image = UIImage(data: data!)
-            }
-        }
+        ishigamiImage.sd_setImage(with: child, placeholderImage: UIImage(named: "icon"))
     }
     
 
@@ -64,6 +60,8 @@ class ishigamiViewController: UIViewController, UIImagePickerControllerDelegate,
             
         
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -85,7 +83,7 @@ class ishigamiViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("IshigamiImages/" + user!.uid + "/"+"ishigami.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("IshigamiImages/" + user!.uid + "/"+"ishigami.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.ishigamiImage.image?.jpegData(compressionQuality: 0.3) {
@@ -99,7 +97,6 @@ class ishigamiViewController: UIViewController, UIImagePickerControllerDelegate,
                         print("error: \(error!.localizedDescription)")
                     }
                     print("url: \(url!.absoluteString)")
-                 
                 })
             }
         }

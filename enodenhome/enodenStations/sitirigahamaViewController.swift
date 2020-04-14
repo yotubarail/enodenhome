@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class sitirigahamaViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -20,19 +21,15 @@ class sitirigahamaViewController: UIViewController, UIImagePickerControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "七里ヶ浜(Shichirigahama)EN09"
+        self.navigationItem.title = "七里ヶ浜 EN09"
         
         imagePick.delegate = self
 
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("SitirigahamaImages/" + user!.uid + "/"+"sitirigahama.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.sitirigahamaImage.image = UIImage(data: data!)
-            }
-        }
+
+        sitirigahamaImage.sd_setImage(with: child)
 
     }
     
@@ -63,6 +60,8 @@ class sitirigahamaViewController: UIViewController, UIImagePickerControllerDeleg
             print("OK")
             
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -84,7 +83,7 @@ class sitirigahamaViewController: UIViewController, UIImagePickerControllerDeleg
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("SitirigahamaImages/" + user!.uid + "/"+"sitirigahama.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("SitirigahamaImages/" + user!.uid + "/"+"sitirigahama.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.sitirigahamaImage.image?.jpegData(compressionQuality: 0.3) {
@@ -98,7 +97,7 @@ class sitirigahamaViewController: UIViewController, UIImagePickerControllerDeleg
                         print("error: \(error!.localizedDescription)")
                     }
                     print("url: \(url!.absoluteString)")
-                 
+                    self.sitirigahamaImage.sd_setImage(with: url!.absoluteURL)
                 })
             }
         }

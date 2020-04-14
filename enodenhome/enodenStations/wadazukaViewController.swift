@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class wadazukaViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 
@@ -19,18 +20,16 @@ class wadazukaViewController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        imagePick.delegate = self
 
-        self.navigationItem.title = "和田塚(Wadazuka)EN14"
+        self.navigationItem.title = "和田塚 EN14"
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("WadazukaImages/" + user!.uid + "/"+"wadazuka.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.wadazukaImage.image = UIImage(data: data!)
-            }
-        }
+
+        wadazukaImage.sd_setImage(with: child)
 
     }
     
@@ -61,6 +60,8 @@ class wadazukaViewController: UIViewController, UIImagePickerControllerDelegate,
             print("OK")
             
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -82,7 +83,7 @@ class wadazukaViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("WadazukaImages/" + user!.uid + "/"+"wadazuka.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("WadazukaImages/" + user!.uid + "/"+"wadazuka.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.wadazukaImage.image?.jpegData(compressionQuality: 0.3) {

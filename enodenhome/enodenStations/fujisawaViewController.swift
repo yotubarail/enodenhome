@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class fujisawaViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -24,21 +25,17 @@ class fujisawaViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "藤沢(Fujisawa)EN01"
+        self.navigationItem.title = "藤沢 EN01"
 
         imagePick.delegate = self
         
         
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("FujisawaImages/" + user!.uid + "/"+"fujisawa.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.image.image = UIImage(data: data!)
-            }
-        }
+
+        image.sd_setImage(with: child)
             
         
             
@@ -72,6 +69,8 @@ class fujisawaViewController: UIViewController, UIImagePickerControllerDelegate,
             
     
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -93,7 +92,7 @@ class fujisawaViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("FujisawaImages/" + user!.uid + "/"+"fujisawa.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("FujisawaImages/" + user!.uid + "/"+"fujisawa.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.image.image?.jpegData(compressionQuality: 0.3) {

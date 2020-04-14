@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class gokurakujiViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -19,19 +20,15 @@ class gokurakujiViewController: UIViewController, UIImagePickerControllerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "極楽寺(Gokurakuji)EN11"
+        self.navigationItem.title = "極楽寺 EN11"
 
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("GokurakujiImages/" + user!.uid + "/"+"gokurakuji.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.gokurakujiImage.image = UIImage(data: data!)
-            }
-        }
+
+        gokurakujiImage.sd_setImage(with: child)
 
     }
     
@@ -63,6 +60,8 @@ class gokurakujiViewController: UIViewController, UIImagePickerControllerDelegat
             print("OK")
             
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -84,7 +83,7 @@ class gokurakujiViewController: UIViewController, UIImagePickerControllerDelegat
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("GokurakujiImages/" + user!.uid + "/"+"gokurakuji.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("GokurakujiImages/" + user!.uid + "/"+"gokurakuji.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.gokurakujiImage.image?.jpegData(compressionQuality: 0.3) {
@@ -118,6 +117,14 @@ class gokurakujiViewController: UIViewController, UIImagePickerControllerDelegat
         self.navigationController?.pushViewController(nextView, animated: true)
     }
     
-  
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
 
 }

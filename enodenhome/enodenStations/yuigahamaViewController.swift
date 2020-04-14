@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class yuigahamaViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     let imagePick = UIImagePickerController()
@@ -19,19 +20,15 @@ class yuigahamaViewController: UIViewController, UIImagePickerControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "由比ヶ浜(Yuigahama)EN13"
+        self.navigationItem.title = "由比ヶ浜 EN13"
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("YuigahamaImages/" + user!.uid + "/"+"yuigahama.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.yuigahamaImage.image = UIImage(data: data!)
-            }
-        }
-
+        
+        yuigahamaImage.sd_setImage(with: child)
+        
     }
     
     
@@ -61,6 +58,8 @@ class yuigahamaViewController: UIViewController, UIImagePickerControllerDelegate
             print("OK")
             
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -82,7 +81,7 @@ class yuigahamaViewController: UIViewController, UIImagePickerControllerDelegate
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("YuigahamaImages/" + user!.uid + "/"+"yuigahama.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("YuigahamaImages/" + user!.uid + "/"+"yuigahama.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.yuigahamaImage.image?.jpegData(compressionQuality: 0.3) {

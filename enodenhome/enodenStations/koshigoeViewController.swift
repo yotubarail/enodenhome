@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -20,20 +21,16 @@ class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "腰越(Koshigoe)EN07"
+        self.navigationItem.title = "腰越 EN07"
 
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("KoshigoeImages/" + user!.uid + "/"+"koshigoe.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.koshigoeImage.image = UIImage(data: data!)
-            }
-        }
 
+        koshigoeImage.sd_setImage(with: child)
+        
     }
     
     
@@ -64,6 +61,8 @@ class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,
             
 
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -85,7 +84,7 @@ class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("KoshigoeImages/" + user!.uid + "/"+"koshigoe.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("KoshigoeImages/" + user!.uid + "/"+"koshigoe.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.koshigoeImage.image?.jpegData(compressionQuality: 0.3) {
@@ -118,5 +117,14 @@ class koshigoeViewController: UIViewController, UIImagePickerControllerDelegate,
         let nextView = storyboard?.instantiateViewController(withIdentifier: "KoshigoeWebChoose") as! KoshigoeWebViewController
         self.navigationController?.pushViewController(nextView, animated: true)
     }
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
 
 }

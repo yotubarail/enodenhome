@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class haseViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     let imagePick = UIImagePickerController()
@@ -19,19 +20,15 @@ class haseViewController: UIViewController, UIImagePickerControllerDelegate,UINa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "長谷(Hase)EN12"
+        self.navigationItem.title = "長谷 EN12"
 
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("HaseImages/" + user!.uid + "/"+"hase.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.haseImage.image = UIImage(data: data!)
-            }
-        }
+
+        haseImage.sd_setImage(with: child)
 
     }
     
@@ -62,6 +59,8 @@ class haseViewController: UIViewController, UIImagePickerControllerDelegate,UINa
             print("OK")
             
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -83,7 +82,7 @@ class haseViewController: UIViewController, UIImagePickerControllerDelegate,UINa
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("HaseImages/" + user!.uid + "/"+"hase.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("HaseImages/" + user!.uid + "/"+"hase.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.haseImage.image?.jpegData(compressionQuality: 0.3) {

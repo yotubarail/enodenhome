@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class kugenumaViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -20,19 +21,15 @@ class kugenumaViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "鵠沼(Kugenuma)EN04"
+        self.navigationItem.title = "鵠沼 EN04"
 
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("KugenumaImages/" + user!.uid + "/"+"kugenuma.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.kugenumaImage.image = UIImage(data: data!)
-            }
-        }
+
+        kugenumaImage.sd_setImage(with: child)
 
     }
     
@@ -63,6 +60,8 @@ class kugenumaViewController: UIViewController, UIImagePickerControllerDelegate,
             print("OK")
           
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -84,7 +83,7 @@ class kugenumaViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("KugenumaImages/" + user!.uid + "/"+"kugenuma.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("KugenumaImages/" + user!.uid + "/"+"kugenuma.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.kugenumaImage.image?.jpegData(compressionQuality: 0.3) {

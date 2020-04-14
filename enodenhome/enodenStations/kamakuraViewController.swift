@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class kamakuraViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     let imagePick = UIImagePickerController()
@@ -21,19 +22,20 @@ class kamakuraViewController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         
         // NavigationItemにタイトルを表示
-        self.navigationItem.title = "鎌倉(Kamakura)EN15"
+        self.navigationItem.title = "鎌倉 EN15"
         
         imagePick.delegate = self
 
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("KamakuraImages/" + user!.uid + "/"+"kamakura.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.kamakuraImage.image = UIImage(data: data!)
-            }
-        }
+//        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
+//            if error != nil {
+//            } else {
+//                self.kamakuraImage.image = UIImage(data: data!)
+//            }
+//        }
+        kamakuraImage.sd_setImage(with: child)
 
     }
     
@@ -64,6 +66,8 @@ class kamakuraViewController: UIViewController, UIImagePickerControllerDelegate,
             print("OK")
             
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -85,7 +89,7 @@ class kamakuraViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("KamakuraImages/" + user!.uid + "/"+"kamakura.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("KamakuraImages/" + user!.uid + "/"+"kamakura.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.kamakuraImage.image?.jpegData(compressionQuality: 0.3) {

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseUI
 
 class enoshimaViewController: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -21,19 +22,15 @@ class enoshimaViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "江ノ島(Enoshima)EN06"
+        self.navigationItem.title = "江ノ島 EN06"
 
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://XXXXX.appspot.com")
+        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
         let child = reference.child("EnoshimaImages/" + user!.uid + "/"+"enoshima.jpg")
-        child.getData(maxSize: 1 * 1024 * 1024) { data, error in
-            if error != nil {
-            } else {
-                self.enoshimaImage.image = UIImage(data: data!)
-            }
-        }
+
+        enoshimaImage.sd_setImage(with: child)
 
     }
     
@@ -65,6 +62,8 @@ class enoshimaViewController: UIViewController, UIImagePickerControllerDelegate,
             
             
             self.upload()
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk()
         })
         
         //キャンセルの場合
@@ -86,7 +85,7 @@ class enoshimaViewController: UIViewController, UIImagePickerControllerDelegate,
     // Firebaseにアップロード
     fileprivate func upload() {
      
-     let storageRef = Storage.storage().reference(forURL: "gs://XXXXX.appspot.com").child("EnoshimaImages/" + user!.uid + "/"+"enoshima.jpg")
+     let storageRef = Storage.storage().reference(forURL: "gs://enodenhome.appspot.com").child("EnoshimaImages/" + user!.uid + "/"+"enoshima.jpg")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
         if let uploadData = self.enoshimaImage.image?.jpegData(compressionQuality: 0.3) {
