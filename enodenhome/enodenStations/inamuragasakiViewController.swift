@@ -26,7 +26,7 @@ class inamuragasakiViewController: UIViewController, UIImagePickerControllerDele
         imagePick.delegate = self
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXX.appspot.com")
         let child = reference.child("InamuragasakiImages/" + user!.uid + "/"+"inamuragasaki.jpg")
 
         inamuragasakiImage.sd_setImage(with: child)
