@@ -32,7 +32,7 @@ class fujisawaViewController: UIViewController, UIImagePickerControllerDelegate,
         
         
         let storage = Storage.storage()
-        let reference = storage.reference(forURL: "gs://enodenhome.appspot.com")
+        let reference = storage.reference(forURL: "gs://XXX.appspot.com")
         let child = reference.child("FujisawaImages/" + user!.uid + "/"+"fujisawa.jpg")
 
         image.sd_setImage(with: child)
